@@ -7,21 +7,26 @@ from agno.tools.postgres import PostgresTools
 from agno.tools.reasoning import ReasoningTools
 from dotenv import load_dotenv
 
-db_url = "postgresql://postgres:admin@localhost:5432/data_enrichment"  # Replace with your own connection string
-
-
 # Load environment variables
 load_dotenv()
+
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
+db_host = os.getenv("DB_HOST")
+db_port = os.getenv("DB_PORT")
+db_name = os.getenv("DB_NAME")
+
+db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"  # Replace with your own connection string
 
 
 def main():
     # Initialize PostgresTools with connection details
     postgres_tools = PostgresTools(
-        host="localhost",
-        port=5432,
-        db_name="data_enrichment",
-        user="postgres",
-        password="admin",
+        host=db_host,
+        port=db_port,
+        db_name=db_name,
+        user=db_user,
+        password=db_password,
     )
     # Create an agent with Gemini model, web search, and database querying capabilities
     agent = Agent(
